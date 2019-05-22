@@ -45,10 +45,12 @@ public class DepartmentController {
 		ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(EmployeeResourceUrl, Object[].class, id);
 		Object[] employees = responseEntity.getBody();		
 		Department dept = departmentRepository.getOne(id);
-		ObjectNode objectNode = mapper.createObjectNode();		
-		objectNode.pojoNode(dept);
-		JsonNode emps = mapper.convertValue(employees, JsonNode.class);  
-		objectNode.put("employees", emps);
+		JsonNode deptJson = mapper.convertValue(dept, JsonNode.class);
+		System.out.printf("dept: %s.\n", deptJson);
+		JsonNode emps = mapper.convertValue(employees, JsonNode.class);
+		ObjectNode objectNode = mapper.createObjectNode();
+		objectNode.put("department", deptJson);
+		objectNode.with("department").put("employees", emps);
 		return objectNode;
 	}
 
