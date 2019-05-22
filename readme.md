@@ -41,7 +41,7 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 }
 ...
 </code></pre>
-<p>As already stated we use tht <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html"><strong>RestTemplate</strong></a> to communicate with the <strong>employees-service</strong> and get the <em>employees</em> for a given <em>department</em>:</p>
+<p>As already stated we will use the <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html"><strong>RestTemplate</strong></a> to communicate with the <strong>employees-service</strong> and get the <em>employees</em> for a given <em>department</em>:</p>
 <pre><code>...
 @GetMapping("/departments/with-employees/{id}")
 public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
@@ -80,6 +80,7 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 <p>We first let the <em>mapper</em> jsonify the <em>dept</em> object, we than let the <em>mapper</em> genertae an <strong>ObjectNode</strong> <em>deptWithEmployees</em>, to wich we add the <em>dept</em> object, under which we add the list of <em>employees</em><br>
 We start both services as Spring Boot Applications and we request <a href="http://localhome:8081/departments/with-employees/2">http://localhome:8081/departments/with-employees/2</a> and we get the <em>“IT” department</em> with the list of all its <em>employees</em>.</p>
 <p><img src="images/departmentWithEmployees.png?raw=true" alt="&quot;IT&quot;-Department with its Employees"></p>
+<h2 id="working-with-java-classes">3. Working with Java Classes</h2>
 <blockquote>
 <p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
 </blockquote>
