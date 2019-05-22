@@ -1,0 +1,4 @@
+/common/home/bel/mkettou/lnx/spring-microservices-with-spring-boot/tutorial-001/department-service/src/main/java/de/meziane/ms/DepartmentApp.java
+/common/home/bel/mkettou/lnx/spring-microservices-with-spring-boot/tutorial-001/department-service/src/main/java/de/meziane/ms/domain/Department.java
+/common/home/bel/mkettou/lnx/spring-microservices-with-spring-boot/tutorial-001/department-service/src/main/java/de/meziane/ms/domain/repository/DepartmentRepository.java
+/common/home/bel/mkettou/lnx/spring-microservices-with-spring-boot/tutorial-001/department-service/src/main/java/de/meziane/ms/controller/DepartmentController.java
