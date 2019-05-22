@@ -5,23 +5,29 @@
 
 <h1 id="microservices-tutorial-002">Microservices Tutorial 002</h1>
 <h2 id="how-to-make-our-rest-services-comminucate">1. How to make our rest-services comminucate</h2>
+<h3 id="introduction">1.1. Introduction</h3>
 <p>We start with our project from <a href="https://github.com/Meziano/tutorial-001">Tutorial-001</a><br>
-We have 2 rest-services or elementary microservices to retrieve data from a databases. Now we will make them communicate using the <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html"><strong>RestTemplate</strong></a></p>
-<h3 id="the-custom-services">1.1. The custom services</h3>
+We have 2 rest-services or elementary microservices to retrieve data from a databases.</p>
+<p>Now we will make them communicate using the <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html"><strong>RestTemplate</strong></a></p>
+<h3 id="the-objective">1.2. The Objective</h3>
 <p>We want to make it possible to retrieve a department with its respective employees.<br>
-The department-service must send a get to the employee-service with the id of the related department to fetch all employees working in this department.<br>
-To achieve that we add a new end-point to the .<br>
-The <em>EmployeeApplication</em>, <em>DepartmentApplication</em> and <em>OrganistionApplication</em> are annotated with the usual <em>@SpringBootApplication</em>:</p>
-<pre><code>package de.meziane.ms;
-...
-@EnableEurekaClient
-@SpringBootApplication
-public class EmployeeApplication {
-  public static void main(String[] args) {
-    SpringApplication.run(EmployeeApplication.class, args);
+The <strong>department-service</strong> must send a <strong>GET</strong> to the <strong>employee-service</strong> with the <em>id</em> of the related <em>department</em> to fetch all <em>employees</em> working in this <em>department</em>.</p>
+<h3 id="strategy">1.3. Strategy</h3>
+<p>The idea is to upgrade the <strong>employee-service</strong> and let it return the list of <em>employees</em> working at/in a certain <em>departement</em>. It’s abivious that the <strong>department-service</strong> will retrieve the <em>department</em> in question an than send the id of this <em>department</em> within a <strong>GET</strong> request to the <strong>employee-service</strong> and the latter  will return a list of <em>employees</em> in <strong>JSON</strong> form. We have to deal with this list as we have to return a single <em>department</em> object enlarged with the list of <em>employees</em>.</p>
+<h2 id="the-code">2. The code</h2>
+<p>To achieve our goal we have first to add a new end-point to the <strong>employee-service</strong> that returns the list of the <em>employees</em> of a given <em>department</em>:</p>
+<pre><code>@GetMapping("/{deptId}/employees")
+public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
+ List&lt;Employee&gt; employees = employeeRepository.findByDepartmentId(deptId); 
+ return employees;
 }
 </code></pre>
-<p>There is another annotation <em>@EnableEurekaClient</em>, but we just ignore it for now.<br>
+<p>The magic of Spring let us make the <em>employeeRepository</em> returns the the <em>employees</em> of a given <em>departementid</em> by adding a single line of code:</p>
+<pre><code>List&lt;Employee&gt; findByDepartmentId(Long departmentId);
+</code></pre>
+<p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.<br>
+<a href="images/departmentWithEmployees.png?raw=true">“IT”-Department with its Employees</a><br>
+There is another annotation <em>@EnableEurekaClient</em>, but we just ignore it for now.<br>
 The applications’ poms have 2 other dependencies:</p>
 <pre><code>...
 &lt;dependency&gt;
