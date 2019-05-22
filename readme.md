@@ -26,7 +26,7 @@ public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
 <pre><code>List&lt;Employee&gt; findByDepartmentId(Long departmentId);
 </code></pre>
 <p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.<br>
-<img src="%22/images/findEmployeesWithdepartmentId.png?raw=true%22" alt="&quot;IT&quot;-Department with its Employees"></p>
+<img src="/images/findEmployeesWithdepartmentId.png?raw=true" alt="&quot;IT&quot;-Department with its Employees"></p>
 <pre><code>...
 &lt;dependency&gt;
   &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
