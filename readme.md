@@ -15,6 +15,7 @@ The <strong>department-service</strong> must send a <strong>GET</strong> to the 
 <h3 id="strategy">1.3. Strategy</h3>
 <p>The idea is to upgrade the <strong>employee-service</strong> and let it return the list of <em>employees</em> working at/in a certain <em>departement</em>. It’s abivious that the <strong>department-service</strong> will retrieve the <em>department</em> in question an than send the id of this <em>department</em> within a <strong>GET</strong> request to the <strong>employee-service</strong> and the latter  will return a list of <em>employees</em> in <strong>JSON</strong> form. We have to deal with this list as we have to return a single <em>department</em> object enlarged with the list of <em>employees</em>.</p>
 <h2 id="the-code">2. The code</h2>
+<h3 id="the-employees-service">2.1. The employees-service</h3>
 <p>To achieve our goal we have first to add a new end-point to the <strong>employee-service</strong> that returns the list of the <em>employees</em> of a given <em>department</em>:</p>
 <pre><code>@GetMapping("/{deptId}/employees")
 public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
@@ -26,50 +27,59 @@ public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
 <pre><code>List&lt;Employee&gt; findByDepartmentId(Long departmentId);
 </code></pre>
 <p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.<br>
-<img src="images/findEmployeesByDepartmentId.png?raw=true" alt="&quot;IT&quot;-Department with its Employees"></p>
+<img src="images/findEmployeesByDepartmentId.png?raw=true" alt="Employees with departmentId=2"></p>
+<h3 id="the-department-service">2.2 the department-service</h3>
+<p>At the <strong>department-service</strong> side we need also a new end-points to retrieve a <em>department</em> with its <em>employees</em>. Here is a first pseudo-code:</p>
 <pre><code>...
-&lt;dependency&gt;
-  &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-  &lt;artifactId&gt;spring-cloud-starter-config&lt;/artifactId&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-  &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-  &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
-&lt;/dependency&gt;
+@GetMapping("/departments/with-employees/{id}")
+public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
+  // retrieve the department
+  Department dept = departmentRepository.getOne(id);
+  // send a GET to the employees-service to get the employees having departmentId= id 
+  // add some how the employees to  dept 
+  return dept /* with its employees*/;
+}
 ...
 </code></pre>
-<p>Let#s ignore those dependecies for now.</p>
-<h3 id="i-1-config-service">I-1 config-service:</h3>
-<p>This service has a sole dependency</p>
-<pre><code>&lt;dependency&gt;
-	&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-	&lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;
-&lt;/dependency&gt;
-</code></pre>
-<p>and a sole Java class the <strong>ConfigApplication</strong> with the annotation <em>@EnableConfigServer</em> that adds an embedded config-server to the spring-boot application:</p>
-<pre><code>package de.meziane.ms;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.config.server.EnableConfigServer;
-
-@EnableConfigServer
-@SpringBootApplication
-public class ConfigApplication {
-   public static void main(String[] args) {
-      SpringApplication.run(ConfigApplication.class, args);
-   }
+<p>As already stated we use tht <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html"><strong>RestTemplate</strong></a> to communicate with the <strong>employees-service</strong> and get the <em>employees</em> for a given <em>department</em>:</p>
+<pre><code>...
+@GetMapping("/departments/with-employees/{id}")
+public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
+  Department dept = departmentRepository.getOne(id);
+  RestTemplate restTemplate = new RestTemplate();
+  String EmployeeResourceUrl   = "http://localhost:8082/{id}/employees";
+  ResponseEntity&lt;Object[]&gt; responseEntity = restTemplate.getForEntity(EmployeeResourceUrl, Object[].class, id);
+  Object[] employees = responseEntity.getBody();
+  ..
+  return dept /* with its employees*/;
 }
 </code></pre>
-<p>The application.properties of the config-service<br>
-The application has like any other spring-boot application an application.properties file (we could have used an application.yml file ) with the following properties:</p>
-<pre><code>server.port=8888
-spring.application.name=config-service
-spring.profiles.active=native
+<p>Now that we have the <em>employees</em> in JSON form we have to find a way to add them to the <em>dept</em> object before rutuning it . To this end we need an ObjectMapper.  We can autowire it like so:</p>
+<pre><code>@RestController
+public class DepartmentController {
+  @Autowired
+  DepartmentRepository departmentRepository;
+  @Autowired
+  ObjectMapper mapper; 
+  ..
+}
 </code></pre>
-<p>With <em>server.port=8888</em> we are saying to the Applictaion not to use the default port 8080 and to use instead the given port.<br>
-The <em>spring.application.name=config-service</em> indicates the name of the service, but it is not important for ower purpose.<br>
-Finaly we the embedded <em>Spring Cloud Config Server</em> to use the local files for configuration data and not to try as per default to fetch them from a Git Repository.</p>
+<p>Now we can use it to manipulate JSON-objects:</p>
+<pre><code>...
+@GetMapping("/departments/with-employees/{id}")
+public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
+  ..
+  Object[] employees = responseEntity.getBody();
+  JsonNode deptJson = mapper.convertValue(dept, JsonNode.class);
+  ObjectNode deptWithEmployees = mapper.createObjectNode();
+  deptWithEmployees.put("department", deptJson);
+  deptWithEmployees.with("department").put("employees", emps);
+  return deptWithEmployees;
+}
+</code></pre>
+<p>We first let the <em>mapper</em> jsonify the <em>dept</em> object, we than let the <em>mapper</em> genertae an <strong>ObjectNode</strong> <em>deptWithEmployees</em>, to wich we add the <em>dept</em> object, under which we add the list of <em>employees</em><br>
+We start both services as Spring Boot Applications and we request <a href="http://localhome:8081/departments/with-employees/2">http://localhome:8081/departments/with-employees/2</a> and we get the <em>“IT” department</em> with the list of all its <em>employees</em>.<br>
+<img src="images/departmentWithEmployees.png?raw=true" alt="&quot;IT&quot;-Department with its Employees"></p>
 <blockquote>
 <p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
 </blockquote>
