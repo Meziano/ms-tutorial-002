@@ -26,7 +26,7 @@ public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
 <pre><code>List&lt;Employee&gt; findByDepartmentId(Long departmentId);
 </code></pre>
 <p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.<br>
-<a href="/images/departmentWithEmployees.png?raw=true%22">“IT”-Department with its Employees</a><br>
+<img src="/images/departmentWithEmployees.png?raw=true%22" alt="&quot;IT&quot;-Department with its Employees"><br>
 There is another annotation <em>@EnableEurekaClient</em>, but we just ignore it for now.<br>
 The applications’ poms have 2 other dependencies:</p>
 <pre><code>...
