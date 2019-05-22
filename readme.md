@@ -14,7 +14,7 @@ We have 2 rest-services or elementary microservices to retrieve data from a data
 The <strong>department-service</strong> must send a <strong>GET</strong> to the <strong>employee-service</strong> with the <em>id</em> of the related <em>department</em> to fetch all <em>employees</em> working in this <em>department</em>.</p>
 <h3 id="strategy">1.3. Strategy</h3>
 <p>The idea is to upgrade the <strong>employee-service</strong> and let it return the list of <em>employees</em> working at/in a certain <em>departement</em>. It’s abivious that the <strong>department-service</strong> will retrieve the <em>department</em> in question an than send the id of this <em>department</em> within a <strong>GET</strong> request to the <strong>employee-service</strong> and the latter  will return a list of <em>employees</em> in <strong>JSON</strong> form. We have to deal with this list as we have to return a single <em>department</em> object enlarged with the list of <em>employees</em>.</p>
-<h2 id="the-code">2. The code</h2>
+<h2 id="working-with--json-objects">2. Working with  JSON Objects</h2>
 <h3 id="the-employees-service">2.1. The employees-service</h3>
 <p>To achieve our goal we have first to add a new end-point to the <strong>employee-service</strong> that returns the list of the <em>employees</em> of a given <em>department</em>:</p>
 <pre><code>@GetMapping("/{deptId}/employees")
@@ -78,8 +78,8 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 }
 </code></pre>
 <p>We first let the <em>mapper</em> jsonify the <em>dept</em> object, we than let the <em>mapper</em> genertae an <strong>ObjectNode</strong> <em>deptWithEmployees</em>, to wich we add the <em>dept</em> object, under which we add the list of <em>employees</em><br>
-We start both services as Spring Boot Applications and we request <a href="http://localhome:8081/departments/with-employees/2">http://localhome:8081/departments/with-employees/2</a> and we get the <em>“IT” department</em> with the list of all its <em>employees</em>.<br>
-<img src="images/departmentWithEmployees.png?raw=true" alt="&quot;IT&quot;-Department with its Employees"></p>
+We start both services as Spring Boot Applications and we request <a href="http://localhome:8081/departments/with-employees/2">http://localhome:8081/departments/with-employees/2</a> and we get the <em>“IT” department</em> with the list of all its <em>employees</em>.</p>
+<p><img src="images/departmentWithEmployees.png?raw=true" alt="&quot;IT&quot;-Department with its Employees"></p>
 <blockquote>
 <p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
 </blockquote>
