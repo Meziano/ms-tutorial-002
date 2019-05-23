@@ -60,7 +60,7 @@ If we start the service, we will see in the console:</p>
 <pre><code>Employees : {departmentId=2, name=Jean Bastic, address=35 avenue Foch, 75116 Paris, age=51, position=agent, id=4}.
 dept: {"name":"IT","description":"Departement informatique.","id":2}.
 </code></pre>
-<p>Now that we have the <em>employees</em> in JSON form we have to find a way to add them to the <em>dept</em> object before rutuning it . To this end we need an ObjectMapper.  We can autowire it like so:</p>
+<p>Now that we have the <em>employees</em> in JSON form we have to find a way to add them to the <em>dept</em> object before rutuning it . To this end we need an <a href="https://static.javadoc.io/com.fasterxml.jackson.core/jackson-databind/2.9.7/com/fasterxml/jackson/databind/ObjectMapper.html">ObjectMapper</a>.  We can autowire it like so:</p>
 <pre><code>@RestController
 public class DepartmentController {
   @Autowired
