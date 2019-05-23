@@ -16,13 +16,14 @@ The <strong>department-service</strong> will send a <strong>GET</strong> to the 
 <p>The idea is to upgrade the <strong>employee-service</strong> and let it return the list of <em>employees</em> working at/in a certain <em>departement</em>. The <strong>department-service</strong> will retrieve the <em>department</em> in question an than send the <em>id</em> of this <em>department</em> within a <strong>GET</strong> request to the <strong>employee-service</strong> and the latter  will return a list of <em>employees</em> in <strong>JSON</strong> form. We have to deal with this list as we have to return a single <em>department</em> object enlarged with the list of <em>employees</em>.</p>
 <h2 id="working-with--json-objects">Working with  JSON Objects</h2>
 <h3 id="the-employees-service">The employees-service</h3>
-<p>To achieve our goal we have first to add a new end-point to the <strong>employee-service</strong> that returns the list of the <em>employees</em> of a given <em>department</em>:</p>
+<p>To achieve our goal we have first to add a new end-point to the <strong>employee-service</strong> that returns a given <em>department</em> the list of the <em>employees</em>:</p>
 <pre><code>@GetMapping("/{deptId}/employees")
 public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
  List&lt;Employee&gt; employees = employeeRepository.findByDepartmentId(deptId); 
  return employees;
 }
 </code></pre>
+<p>Per default in JSON form per default
 <p>The magic of Spring let us make the <em>employeeRepository</em> returns the the <em>employees</em> of a given <em>departementid</em> by adding a single line of code:</p>
 <pre><code>List&lt;Employee&gt; findByDepartmentId(Long departmentId);
 </code></pre>
@@ -107,5 +108,5 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 </blockquote>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTUwOTEwMjc4Ml19
+eyJoaXN0b3J5IjpbLTI4NDE2NTk1NiwxNTA5MTAyNzgyXX0=
 -->
