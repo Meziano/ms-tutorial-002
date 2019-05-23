@@ -7,13 +7,13 @@
 <h2 id="make-our-rest-services-comminucate-using-json">Make our rest-services comminucate using JSON</h2>
 <h3 id="introduction">Introduction</h3>
 <p>We start with our projects from <a href="https://github.com/Meziano/tutorial-001">Tutorial-001</a><br>
-We have 2 rest-services or elementary microservices that retrieve data from  databases.</p>
+We have 2 rest-services or elementary microservices that retrieve data from databases.</p>
 <p>Now we will make them communicate using the <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html"><strong>RestTemplate</strong></a></p>
 <h3 id="the-objective">The Objective</h3>
 <p>We want to make it possible to retrieve a department with its respective employees.<br>
-The <strong>department-service</strong> must send a <strong>GET</strong> to the <strong>employee-service</strong> with the <em>id</em> of the related <em>department</em> to fetch all <em>employees</em> working in this <em>department</em>.</p>
+The <strong>department-service</strong> will send a <strong>GET</strong> to the <strong>employee-service</strong> with the <em>id</em> of the related <em>department</em> to fetch all <em>employees</em> working in this <em>department</em>.</p>
 <h3 id="strategy">Strategy</h3>
-<p>The idea is to upgrade the <strong>employee-service</strong> and let it return the list of <em>employees</em> working at/in a certain <em>departement</em>. It’s abivious that the <strong>department-service</strong> will retrieve the <em>department</em> in question an than send the id of this <em>department</em> within a <strong>GET</strong> request to the <strong>employee-service</strong> and the latter  will return a list of <em>employees</em> in <strong>JSON</strong> form. We have to deal with this list as we have to return a single <em>department</em> object enlarged with the list of <em>employees</em>.</p>
+<p>The idea is to upgrade the <strong>employee-service</strong> and let it return the list of <em>employees</em> working at/in a certain <em>departement</em>. The <strong>department-service</strong> will retrieve the <em>department</em> in question an than send the id of this <em>department</em> within a <strong>GET</strong> request to the <strong>employee-service</strong> and the latter  will return a list of <em>employees</em> in <strong>JSON</strong> form. We have to deal with this list as we have to return a single <em>department</em> object enlarged with the list of <em>employees</em>.</p>
 <h2 id="working-with--json-objects">Working with  JSON Objects</h2>
 <h3 id="the-employees-service">The employees-service</h3>
 <p>To achieve our goal we have first to add a new end-point to the <strong>employee-service</strong> that returns the list of the <em>employees</em> of a given <em>department</em>:</p>
@@ -107,5 +107,5 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 </blockquote>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTEyODI1MjQ0XX0=
+eyJoaXN0b3J5IjpbLTM5OTk0OTUyNV19
 -->
