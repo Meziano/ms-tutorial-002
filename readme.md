@@ -24,8 +24,7 @@ public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
 }
 </code></pre>
 <p>Per default Spring Boot returns the List of *emlpoyees* in JSON form.</p>
-<h3 id="the-employees-service">The employees-service</h3>
-<p>The magic of Spring let us make the <em>employeeRepository</em> returns the the <em>employees</em> of a given <em>departementid</em> by adding a single line of code:</p>
+<p>The magic of Spring let us make the <strong>employeeRepository</strong> returns the <em>employees</em> of a given <em>departementId</em> by adding a single line of code:</p>
 <pre><code>List&lt;Employee&gt; findByDepartmentId(Long departmentId);
 </code></pre>
 <p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.<br>
@@ -109,5 +108,5 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 </blockquote>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIzNTM0ODM2LDE1MDkxMDI3ODJdfQ==
+eyJoaXN0b3J5IjpbMTI3NzI2NDM1NywxNTA5MTAyNzgyXX0=
 -->
