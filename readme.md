@@ -26,8 +26,8 @@ public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
 <p>The magic of Spring let us make the <em>employeeRepository</em> returns the the <em>employees</em> of a given <em>departementid</em> by adding a single line of code:</p>
 <pre><code>List&lt;Employee&gt; findByDepartmentId(Long departmentId);
 </code></pre>
-<p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.</p>
-<p><img src="images/findEmployeesByDepartmentId.png?raw=true" alt="Employees with departmentId=2"></p>
+<p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.<br>
+<img src="images/findEmployeesByDepartmentId.png?raw=true" alt="Employees with departmentId=2"></p>
 <h3 id="the-department-service">the department-service</h3>
 <p>At the <strong>department-service</strong> side we need also a new end-points to retrieve a <em>department</em> with its <em>employees</em>. Here is a first pseudo-code:</p>
 <pre><code>...
@@ -86,25 +86,23 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 <p>We first let the <em>mapper</em> jsonify the <em>dept</em> object, we than let the <em>mapper</em> genertae an <strong>ObjectNode</strong> <em>deptWithEmployees</em>, to wich we add the <em>dept</em> object, under which we add the list of <em>employees</em><br>
 We start both services as Spring Boot Applications and we request <a href="http://localhome:8081/departments/with-employees/2">http://localhome:8081/departments/with-employees/2</a> and we get the <em>“IT” department</em> with the list of all its <em>employees</em>.</p>
 <p><img src="images/departmentWithEmployees.png?raw=true" alt="&quot;IT&quot;-Department with its Employees"></p>
-<pre><code>We will use the [exchange](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html#exchange-java.lang.String-org.springframework.http.HttpMethod-org.springframework.http.HttpEntity-org.springframework.core.ParameterizedTypeReference-java.util.Map-) method of the [**RestTemplate**](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html) to communicate with the **employees-service** and get the *employees* for a given *department*:   
+<p>We will use the <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html#exchange-java.lang.String-org.springframework.http.HttpMethod-org.springframework.http.HttpEntity-org.springframework.core.ParameterizedTypeReference-java.util.Map-">exchange</a> method of the <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html"><strong>RestTemplate</strong></a> to communicate with the <strong>employees-service</strong> and get the <em>employees</em> for a given <em>department</em>:</p>
+<pre><code>...
+@GetMapping("/departments/with-employees/{id}")
+public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
+  Department dept = departmentRepository.getOne(id);
+  RestTemplate restTemplate = new RestTemplate();
+  String EmployeeResourceUrl = "http://localhost:8082/{id}/employees";
+  ResponseEntity&lt;List&lt;Employee&gt;&gt; response = restTemplate.exchange(EmployeeResourceUrl, HttpMethod.GET, null,
+   new ParameterizedTypeReference&lt;List&lt;Employee&gt;&gt;() {}, id);
+  List&lt;Employee&gt; employees = response.getBody();	
+  dept.setEmployees(employees);
+  return dept;
+}
 </code></pre>
-<p>…<br>
-@GetMapping("/departments/with-employees/{id}")<br>
-public ObjectNode findByIdWithEmployees(@PathVariable Long id) {<br>
-Department dept = departmentRepository.getOne(id);<br>
-RestTemplate restTemplate = new RestTemplate();<br>
-String EmployeeResourceUrl = “<a href="http://localhost:8082/%7Bid%7D/employees">http://localhost:8082/{id}/employees</a>”;<br>
-ResponseEntity&lt;List&gt; response = restTemplate.exchange(EmployeeResourceUrl, HttpMethod.GET, null,<br>
-new ParameterizedTypeReference&lt;List&gt;() {}, id);<br>
-List employees = response.getBody();	<br>
-dept.setEmployees(employees);<br>
-return dept;<br>
-}</p>
-<pre><code>We start both services as Spring Boot Applications and we request http://localhome:8081/departments/with-employees/1 and we get the *"IT" department* with the list of all its *employees*.
-
-!["IT"-Department with its Employees](images/departmentWithEmployees.png?raw=true)
-
-
-&gt; Written with [StackEdit](https://stackedit.io/).
-</code></pre>
+<p>We start both services as Spring Boot Applications and we request <a href="http://localhome:8081/departments/with-employees/1">http://localhome:8081/departments/with-employees/1</a> and we get the <em>“IT” department</em> with the list of all its <em>employees</em>.</p>
+<p><img src="images/departmentWithEmployees.png?raw=true" alt="&quot;IT&quot;-Department with its Employees"></p>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
+</blockquote>
 
