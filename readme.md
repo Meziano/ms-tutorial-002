@@ -13,7 +13,7 @@ We have 2 rest-services or elementary microservices that retrieve data from data
 <p>We want to make it possible to retrieve a department with its respective employees.<br>
 The <strong>department-service</strong> will send a <strong>GET</strong> to the <strong>employee-service</strong> with the <em>id</em> of the related <em>department</em> to fetch all <em>employees</em> working in this <em>department</em>.</p>
 <h3 id="strategy">Strategy</h3>
-<p>The idea is to upgrade the <strong>employee-service</strong> and let it return the list of <em>employees</em> working at/in a certain <em>departement</em>. The <strong>department-service</strong> will retrieve the <em>department</em> in question an than send the id of this <em>department</em> within a <strong>GET</strong> request to the <strong>employee-service</strong> and the latter  will return a list of <em>employees</em> in <strong>JSON</strong> form. We have to deal with this list as we have to return a single <em>department</em> object enlarged with the list of <em>employees</em>.</p>
+<p>The idea is to upgrade the <strong>employee-service</strong> and let it return the list of <em>employees</em> working at/in a certain <em>departement</em>. The <strong>department-service</strong> will retrieve the <em>department</em> in question an than send the <em>id</em> of this <em>department</em> within a <strong>GET</strong> request to the <strong>employee-service</strong> and the latter  will return a list of <em>employees</em> in <strong>JSON</strong> form. We have to deal with this list as we have to return a single <em>department</em> object enlarged with the list of <em>employees</em>.</p>
 <h2 id="working-with--json-objects">Working with  JSON Objects</h2>
 <h3 id="the-employees-service">The employees-service</h3>
 <p>To achieve our goal we have first to add a new end-point to the <strong>employee-service</strong> that returns the list of the <em>employees</em> of a given <em>department</em>:</p>
@@ -107,5 +107,5 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 </blockquote>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM5OTk0OTUyNV19
+eyJoaXN0b3J5IjpbMTUwOTEwMjc4Ml19
 -->
