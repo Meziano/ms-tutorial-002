@@ -26,8 +26,8 @@ public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
 <p>The magic of Spring let us make the <em>employeeRepository</em> returns the the <em>employees</em> of a given <em>departementid</em> by adding a single line of code:</p>
 <pre><code>List&lt;Employee&gt; findByDepartmentId(Long departmentId);
 </code></pre>
-<p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.<br>
-<img src="images/findEmployeesByDepartmentId.png?raw=true" alt="Employees with departmentId=2"></p>
+<p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.</p>
+<p><img src="images/findEmployeesByDepartmentId.png?raw=true" alt="Employees with departmentId=2"></p>
 <h3 id="the-department-service">the department-service</h3>
 <p>At the <strong>department-service</strong> side we need also a new end-points to retrieve a <em>department</em> with its <em>employees</em>. Here is a first pseudo-code:</p>
 <pre><code>...
