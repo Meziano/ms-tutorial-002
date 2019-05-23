@@ -6,8 +6,8 @@
 <h1 id="microservices-tutorial-002">Microservices Tutorial 002</h1>
 <h2 id="make-our-rest-services-comminucate-using-json">Make our rest-services comminucate using JSON</h2>
 <h3 id="introduction">Introduction</h3>
-<p>We start with our project from <a href="https://github.com/Meziano/tutorial-001">Tutorial-001</a><br>
-We have 2 rest-services or elementary microservices to retrieve data from a databases.</p>
+<p>We start with our projects from <a href="https://github.com/Meziano/tutorial-001">Tutorial-001</a><br>
+We have 2 rest-services or elementary microservices that retrieve data from  databases.</p>
 <p>Now we will make them communicate using the <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html"><strong>RestTemplate</strong></a></p>
 <h3 id="the-objective">The Objective</h3>
 <p>We want to make it possible to retrieve a department with its respective employees.<br>
@@ -106,3 +106,6 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 <p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
 </blockquote>
 
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbOTEyODI1MjQ0XX0=
+-->
