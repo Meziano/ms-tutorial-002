@@ -27,7 +27,7 @@ public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
 <p>The magic of Spring let us make the <strong>employeeRepository</strong> returns the <em>employees</em> of a given <em>departementId</em> by adding a single line of code:</p>
 <pre><code>
 package de.meziane.ms.repository;
-...
+..
 public interface EmployeeRepository extends JpaRepository<Employee, Long>{
   List&lt;Employee&gt; findByDepartmentId(Long departmentId);
 }
@@ -113,6 +113,6 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 </blockquote>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5OTI1Mjg3MTIsMTI3NzI2NDM1NywxNT
-A5MTAyNzgyXX0=
+eyJoaXN0b3J5IjpbLTU5MDIyOTg1NCwxMjc3MjY0MzU3LDE1MD
+kxMDI3ODJdfQ==
 -->
