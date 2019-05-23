@@ -95,6 +95,9 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 <p>We first let the <em>mapper</em> jsonify the <em>dept</em> object, we than let the <em>mapper</em> generate an <a href="https://jar-download.com/javaDoc/com.fasterxml.jackson.core/jackson-databind/2.9.5/com/fasterxml/jackson/databind/node/ObjectNode.html">ObjectNode</a> <em>deptWithEmployees</em>, to which we add the <em>dept</em> object, under which we add the list of <em>employees</em>.<br>
 We start both services as <strong>Spring Boot Application</strong>s from the <em>eclipse IDE</em> for example,  we request <a href="http://localhome:8081/departments/with-employees/2">http://localhome:8081/departments/with-employees/2</a> and we get the <em>“IT” department</em> with the list of all its <em>employees</em>.</p>
 <p><img src="images/departmentWithEmployees.png?raw=true" alt="&quot;IT&quot;-Department with its Employees"></p>
+<h2 id="summary">Summary</h2>
+<p>We have 2 independant Rest services that can communicate using the <em>JSON</em> form .<br>
+We considered just the <strong>GET</strong> method as we focused in the communication between 2 Rest services</p>
 <blockquote>
 <p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
 </blockquote>
