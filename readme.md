@@ -25,7 +25,12 @@ public List&lt;Employee&gt; findByDepartmentId(@PathVariable Long deptId) {
 </code></pre>
 <p>Per default Spring Boot returns the List of *emlpoyees* in JSON form.</p>
 <p>The magic of Spring let us make the <strong>employeeRepository</strong> returns the <em>employees</em> of a given <em>departementId</em> by adding a single line of code:</p>
-<pre><code>List&lt;Employee&gt; findByDepartmentId(Long departmentId);
+<pre><code>
+package de.meziane.ms.repository;
+...
+public interface EmployeeRepository extends JpaRepository<Employee, Long>{
+  List&lt;Employee&gt; findByDepartmentId(Long departmentId);
+}
 </code></pre>
 <p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.<br>
 <img src="images/findEmployeesByDepartmentId.png?raw=true" alt="Employees with departmentId=2"></p>
@@ -108,5 +113,6 @@ public ObjectNode findByIdWithEmployees(@PathVariable Long id) {
 </blockquote>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTI3NzI2NDM1NywxNTA5MTAyNzgyXX0=
+eyJoaXN0b3J5IjpbLTE5OTI1Mjg3MTIsMTI3NzI2NDM1NywxNT
+A5MTAyNzgyXX0=
 -->
