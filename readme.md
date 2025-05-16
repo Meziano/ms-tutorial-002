@@ -28,7 +28,7 @@ The magic of Spring let us make the <em>employeeRepository</em> returns the the 
 <pre><code>package de.meziane.ms.repository;
 ..
 public interface EmployeeRepository extends JpaRepository&lt;Employee, Long&gt;{
- List&amp;lt;Employee&amp;gt; findByDepartmentId(Long departmentId);
+ List&lt;Employee&gt; findByDepartmentId(Long departmentId);
 }
 </code></pre>
 <p>Now if we request <a href="http://localhome:8082/2/employees">http://localhome:8082/2/employees</a> we get the list of all <em>employees</em> working at/in the “IT” department with id=2.<br>
